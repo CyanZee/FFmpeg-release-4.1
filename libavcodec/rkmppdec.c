@@ -19,7 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#ifndef CONFIG_ION
 #include <drm_fourcc.h>
+#endif
+
 #include <pthread.h>
 #include <rockchip/mpp_buffer.h>
 #include <rockchip/rk_mpi.h>
@@ -78,7 +81,9 @@ static MppCodingType rkmpp_get_codingtype(AVCodecContext *avctx)
 static uint32_t rkmpp_get_frameformat(MppFrameFormat mppformat)
 {
     switch (mppformat) {
+#ifndef CONFIG_ION
     case MPP_FMT_YUV420SP:          return DRM_FORMAT_NV12;
+#endif
 #ifdef DRM_FORMAT_NV12_10
     case MPP_FMT_YUV420SP_10BIT:    return DRM_FORMAT_NV12_10;
 #endif
@@ -365,7 +370,11 @@ static int rkmpp_retrieve_frame(AVCodecContext *avctx, AVFrame *frame)
 
             hwframes = (AVHWFramesContext*)decoder->frames_ref->data;
             hwframes->format    = AV_PIX_FMT_DRM_PRIME;
+#ifndef CONFIG_ION
             hwframes->sw_format = drmformat == DRM_FORMAT_NV12 ? AV_PIX_FMT_NV12 : AV_PIX_FMT_NONE;
+#else
+            hwframes->sw_format = AV_PIX_FMT_NONE;
+#endif
             hwframes->width     = avctx->width;
             hwframes->height    = avctx->height;
             ret = av_hwframe_ctx_init(decoder->frames_ref);

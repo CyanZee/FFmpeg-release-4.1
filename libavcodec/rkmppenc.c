@@ -19,7 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#ifndef CONFIG_ION
 #include <drm_fourcc.h>
+#endif
+
 #include <pthread.h>
 #include <rockchip/mpp_buffer.h>
 #include <rockchip/rk_mpi.h>
