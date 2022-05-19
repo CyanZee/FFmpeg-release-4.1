@@ -371,7 +371,7 @@ static int rkmpp_retrieve_frame(AVCodecContext *avctx, AVFrame *frame)
             hwframes = (AVHWFramesContext*)decoder->frames_ref->data;
             hwframes->format    = AV_PIX_FMT_DRM_PRIME;
 #ifndef CONFIG_ION
-            hwframes->sw_format = drmformat == DRM_FORMAT_NV12 ? AV_PIX_FMT_NV12 : AV_PIX_FMT_NONE;
+            hwframes->sw_format = av_drm_get_pixfmt(drmformat);
 #else
             hwframes->sw_format = AV_PIX_FMT_NONE;
 #endif
