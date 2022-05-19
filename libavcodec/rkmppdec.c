@@ -110,7 +110,9 @@ static int rkmpp_write_nv12(MppBuffer mpp_buffer, int mpp_vir_width,
     }
 
     src_info.fd = mpp_buffer_get_fd(mpp_buffer);
+#ifndef CONFIG_ION
     src_info.mmuFlag = 1;
+#endif
     // mpp decoder always return nv12(yuv420sp)
     rga_set_rect(&src_info.rect, 0, 0, width, height,
                  mpp_vir_width, mpp_vir_height, RK_FORMAT_YCbCr_420_SP);
@@ -118,7 +120,9 @@ static int rkmpp_write_nv12(MppBuffer mpp_buffer, int mpp_vir_width,
     dst_info.fd = -1;
     // dst_frame data[*] must be continuous
     dst_info.virAddr = dst_frame->data[0];
+#ifndef CONFIG_ION
     dst_info.mmuFlag = 1;
+#endif
     rga_set_rect(&dst_info.rect, dst_frame->crop_left, dst_frame->crop_top,
                  width, height, dst_frame->linesize[0], possible_height,
                  rga_format);
