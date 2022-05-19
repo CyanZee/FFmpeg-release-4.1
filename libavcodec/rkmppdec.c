@@ -264,6 +264,10 @@ static int rkmpp_init_decoder(AVCodecContext *avctx)
     RK_S64 paramS64;
     RK_S32 paramS32;
 
+#ifdef CONFIG_ION
+    avctx->pix_fmt = AV_PIX_FMT_NONE;
+#endif
+
     if (avctx->pix_fmt == AV_PIX_FMT_NONE &&
         avctx->sw_pix_fmt == AV_PIX_FMT_NONE) {
         // chromium only support AV_PIX_FMT_YUV420P
